@@ -12,31 +12,29 @@
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
-  <nav class="grey darken-2" role="navigation">
-    <ul class="hide-on-med-and-down">
-    <li><a href="#!">First Sidebar Link</a></li>
-    <li><a href="#!">Second Sidebar Link</a></li>
+  <nav class="grey darken-2">
+    <div class="nav-wrapper">
+      <a href="http://vexio.us" class="brand-logo center"><img src="assets/favicon.png" style="width:62px;height;62px" /></a>
+      <a href="#sidebar" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons white-text">menu</i></a>
+    </div>
+  <ul id="slide-out" class="side-nav grey lighten-4">
+    <li><div class="userView">
+      <div class="background">
+        <img src="http://media02.hongkiat.com/nature-photography/nature_017.jpg">
+      </div>
+      <a href="/about"><img class="circle" src="assets/favicon.png"></a>
+      <a href="/about"><span class="white-text name">Bryce Hoffhous</span></a>
+      <a href="/about"><span class="white-text email">bryce@vexio.us</span></a>
+    </div></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Media</a></li>
+    <li><a href="http://youtube.com/c/Vexioo"><i class="material-icons left black-text">play_arrow</i>YouTube</a></li>
+    <li><a href="http://twitter.com/vexioxd"><i class="material-icons left black-text">account_circle</i>Twitter</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Projects</a></li>
+    <li><a href="http://ion.vexio.us"><i class="material-icons left black-text">fiber_manual_record</i>The Ion Project</a></li>
   </ul>
-  <ul id="slide-out" class="side-nav fixed">
-      <li class="bold"><a href="#!" class="waves-effect waves-teal">First Sidebar Link</a></li>
-      <li class="bold"><a href="#!" class="">Second Sidebar Link</a></li>
-      <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li>
-            <a class="collapsible-header waves-effect waves-teal">Dropdown<i class="mdi-navigation-arrow-drop-down"></i></a>
-            <div class="collapsible-body">
-              <ul>
-                <li><a href="#!">First</a></li>
-                <li><a href="#!">Second</a></li>
-                <li><a href="#!">Third</a></li>
-                <li><a href="#!">Fourth</a></li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+
 </nav>
 
   <div id="index-banner" class="parallax-container">
@@ -54,7 +52,7 @@
 
       </div>
     </div>
-    <div class="parallax"><img src="background1.jpg" alt="Unsplashed background img 1"></div>
+    <div class="parallax"><img src="assets/traintracks.jpg" alt="Unsplashed background img 1"></div>
   </div>
 
 
