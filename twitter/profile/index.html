@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>Jay | Twitter</title>
+  <link rel="icon" href="../assets/jayLogo.png">
+  <meta name="theme-color" content="#2196f3">
+  <meta name="msapplication-navbutton-color" content="#2196f3">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#2196f3">
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="../../css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="../../css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="blue">
+    <div class="nav-wrapper">
+      <a href="http://vexio.us/twitter" class="brand-logo center"><img src="../assets/jayLogo.png" style="width:62px;height;62px" /></a>
+      <a href="#sidebar" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons white-text">menu</i></a>
+    </div>
+  <ul id="slide-out" class="side-nav grey lighten-4">
+    <li><div class="userView">
+      <div class="background">
+        <img src="../assets/profileHeader-1500x500.jpg">
+      </div>
+      <img class="circle" src="https://pbs.twimg.com/profile_images/815763264718000129/Rd1W6vyV_400x400.jpg">
+      <span class="white-text"><b>Bryce</b> @brycehoffhous</span>
+    </div></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">Account</a></li>
+      <li><a href="http://vexio.us/twitter"><i class="material-icons left black-text">home</i>Timeline</a></li>
+      <li><a href="http://vexio.us/twitter/profile"><i class="material-icons left black-text">account_circle</i>Profile</a></li>
+      <li><a href="http://vexio.us/twitter/mentions"><i class="material-icons left black-text">notifications</i>Notifications</a></li>
+      <li><a href="http://vexio.us/twitter/messages"><i class="material-icons left black-text">messages</i>Messages</a></li>
+      <li><a href="http://vexio.us/twitter/settings"><i class="material-icons left black-text">settings</i>Settings</a></li>
+      <li><a href="http://vexio.us/twitter/explore"><i class="material-icons left black-text">search</i>Explore</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">Actions</a></li>
+      <li><a onclick="$('.tap-target').tapTarget('open')"><i class="material-icons left black-text">edit</i>Tweet</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">Credits</a></li>
+      <li><a href="http://bryce.hoffho.us"><i class="material-icons left black-text">build</i>@brycehoffhous | creator</a></li>
+      <li><a href="http://materializecss.com"><i class="material-icons left black-text">build</i>materializecss | CSS/JS</a></li>
+  </ul>
+    <div class="parallax-container valign-wrapper">
+      <div class="section no-pad-bot">
+      <div class="parallax"><img src="../assets/profileHeader-1500x500.jpg" alt="Header"></div>
+    </div>
+      <div class="fixed-action-btn" style="bottom:24px; right; 24px;">
+        <a id="compose" class="btn btn-floating btn-large blue tooltipped" data-position="left" data-delay="150" data-tooltip="Compose a Tweet" onclick="$('.tap-target').tapTarget('open')">
+          <i class="material-icons">create</i>
+        </a>
+      </div>
+      <div class="tap-target blue lighten-1" data-activates="compose">
+        <div class="tap-target-content">
+          <h5>Composing a Tweet</h5>
+          <p>We are introducing a new way to tweet; but since this is not an actual twitter website, you can't actually tweet! Haha! Loser!</p>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="section">
+        <div class="row">
+          <div class="card-panel grey lighten-4 black-text">
+            <img class="circle left" src="https://pbs.twimg.com/profile_images/815763264718000129/Rd1W6vyV_400x400.jpg" style="width:120px;height:120px"><a class="btn-floating btn-large waves-effect waves-light blue accent-2 right tooltipped" data-position="left" data-delay="150" data-tooltip="Follow @brycehoffhous" onclick="Materialize.toast('Followed @brycehoffhous', 2000, 'rounded')"><i class="material-icons right">add</i></a>
+            <p><font size="+3" color="black"><font color="#f5f5f5">---</font> Bryce</font></p>
+            <p><font size="+1" color="black"><font color="#f5f5f5">------</font> @brycehoffhous</font></p>
+            <p>15 yrs old, Developer, creator of this concept website for Twitter, Materialize enthusiast.</p>
+            <div class="row">
+              <div class="col s12 m4">
+                <div class="icon-block">
+                  <h3 class="center blue-text accent-1"><i class="material-icons">people</i></h3>
+                  <h6 class="center">Followers</h6>
+                  <h6 class="center">420</h6>
+                </div>
+              </div>
+              <div class="col s12 m4">
+                <div class="icon-block">
+                  <h3 class="center blue-text accent-1"><i class="material-icons">people_outline</i></h3>
+                  <h6 class="center">Following</h6>
+                  <h6 class="center">43</h6>
+                </div>
+              </div>
+              <div class="col s12 m4">
+                <div class="icon-block">
+                  <h3 class="center blue-text accent-1"><i class="material-icons">send</i></h3>
+                  <h6 class="center">Tweets</h6>
+                  <h6 class="center">12.3k</h6>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="../../js/materialize.js"></script>
+  <script src="../../js/init.js"></script>
+
+  </body>
+</html>
