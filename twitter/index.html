@@ -35,7 +35,7 @@
       <li><a href="http://vexio.us/twitter/explore"><i class="material-icons left black-text">search</i>Explore</a></li>
       <li><div class="divider"></div></li>
       <li><a class="subheader">Actions</a></li>
-      <li><a href="http://vexio.us/twitter/compose"><i class="material-icons left black-text">edit</i>Tweet</a></li>
+      <li><a onclick="$('.tap-target').tapTarget('open')"><i class="material-icons left black-text">edit</i>Tweet</a></li>
       <li><div class="divider"></div></li>
       <li><a class="subheader">Credits</a></li>
       <li><a href="http://bryce.hoffho.us"><i class="material-icons left black-text">build</i>@brycehoffhous | creator</a></li>
@@ -85,6 +85,17 @@
                 <a href="#like" class="tooltipped" data-position="bottom" data-delay="150" data-tooltip="Like"><i class="material-icons left grey-text darken-4">favorite</i></a>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="fixed-action-btn" style="bottom:24px; right; 24px;">
+          <a id="compose" class="btn btn-floating btn-large blue tooltipped" data-position="left" data-delay="150" data-tooltip="Compose a Tweet" onclick="$('.tap-target').tapTarget('open')">
+            <i class="material-icons">create</i>
+          </a>
+        </div>
+        <div class="tap-target blue lighten-1" data-activates="compose">
+          <div class="tap-target-content">
+            <h5>Composing a Tweet</h5>
+            <p>We are introducing a new way to tweet; but since this is not an actual twitter website, you can't actually tweet! Haha! Loser!</p>
           </div>
         </div>
       </div>
