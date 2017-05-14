@@ -6,7 +6,7 @@ options:
     errorMessage: &4&lERROR&c Insufficient permission
     error: &4&lERROR&c
     letters: "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y" and "Z"
-    debug: false
+    debug: true
     debugPrefix: &c[&lDEBUG&r&c]&7
     #! Names of Punishments
     # GENERAL
@@ -47,23 +47,78 @@ options:
 aliases:
     redstone torch item = 76
     azure bluet = 38:3
-function updatePunishments(player: text, punish: text, punisher: player):
-    set {_p} to {_player} parsed as offline player
-    set {punish.offenses::%{_p}%::5} to {punish.offenses::%{_p}%::4}
-    set {punish.offenses.punisher::%{_p}%::5} to {punish.offenses.punisher::%{_p}%::4}
-    set {punish.offenses.date::%{_p}%::5} to {punish.offenses.date::%{_p}%::4}
-    set {punish.offenses::%{_p}%::4} to {punish.offenses::%{_p}%::3}
-    set {punish.offenses.punisher::%{_p}%::4} to {punish.offenses.punisher::%{_p}%::3}
-    set {punish.offenses.date::%{_p}%::4} to {punish.offenses.date::%{_p}%::3}
-    set {punish.offenses::%{_p}%::3} to {punish.offenses::%{_p}%::2}
-    set {punish.offenses.punisher::%{_p}%::3} to {punish.offenses.punisher::%{_p}%::2}
-    set {punish.offenses.date::%{_p}%::3} to {punish.offenses.date::%{_p}%::2}
-    set {punish.offenses::%{_p}%::2} to {punish.offenses::%{_p}%::1}
-    set {punish.offenses.punisher::%{_p}%::2} to {punish.offenses.punisher::%{_p}%::1}
-    set {punish.offenses.date::%{_p}%::2} to {punish.offenses.date::%{_p}%::1}
-    set {punish.offenses::%{_p}%::1} to {_punish}
-    set {punish.offenses.punisher::%{_p}%::1} to {_punisher}
-    set {punish.offenses.date::%{_p}%::1} to now
+    torch item = 50
+function updatePunishments(player: text, punish: text, punisher: player, punishType: text):
+    if {_punish} = "backwards":
+        set {_p} to {_player} parsed as offline player
+        set {_size} to size of {punish.offenses.%{_punishType}%::%{_p}%::*}
+        if {_size} = 1:
+            delete {punish.offenses.%{_punishType}%::%{_p}%::1}
+            delete {punish.offenses.%{_punishType}%.punisher::%{_p}%::1}
+            delete {punish.offenses.%{_punishType}%.date::%{_p}%::1}
+        else if {_size} = 2:
+            set {punish.offenses.%{_punishType}%::%{_p}%::1} to {punish.offenses.%{_punishType}%::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::1} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::1} to {punish.offenses.%{_punishType}%.date::%{_p}%::2}
+            delete {punish.offenses.%{_punishType}%::%{_p}%::2}
+            delete {punish.offenses.%{_punishType}%.punisher::%{_p}%::2}
+            delete {punish.offenses.%{_punishType}%.date::%{_p}%::2}
+        else if {_size} = 3:
+            set {punish.offenses.%{_punishType}%::%{_p}%::1} to {punish.offenses.%{_punishType}%::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::1} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::1} to {punish.offenses.%{_punishType}%.date::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%::%{_p}%::2} to {punish.offenses.%{_punishType}%::%{_p}%::3}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::2} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::3}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::2} to {punish.offenses.%{_punishType}%.date::%{_p}%::3}
+            delete {punish.offenses.%{_punishType}%::%{_p}%::3}
+            delete {punish.offenses.%{_punishType}%.punisher::%{_p}%::3}
+            delete {punish.offenses.%{_punishType}%.date::%{_p}%::3}
+        else if {_size} = 4:
+            set {punish.offenses.%{_punishType}%::%{_p}%::1} to {punish.offenses.%{_punishType}%::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::1} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::1} to {punish.offenses.%{_punishType}%.date::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%::%{_p}%::2} to {punish.offenses.%{_punishType}%::%{_p}%::3}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::2} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::3}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::2} to {punish.offenses.%{_punishType}%.date::%{_p}%::3}
+            set {punish.offenses.%{_punishType}%::%{_p}%::3} to {punish.offenses.%{_punishType}%::%{_p}%::4}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::3} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::4}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::3} to {punish.offenses.%{_punishType}%.date::%{_p}%::4}
+            delete {punish.offenses.%{_punishType}%::%{_p}%::4}
+            delete {punish.offenses.%{_punishType}%.punisher::%{_p}%::4}
+            delete {punish.offenses.%{_punishType}%.date::%{_p}%::4}
+        else if {_size} = 5:
+            set {punish.offenses.%{_punishType}%::%{_p}%::1} to {punish.offenses.%{_punishType}%::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::1} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::1} to {punish.offenses.%{_punishType}%.date::%{_p}%::2}
+            set {punish.offenses.%{_punishType}%::%{_p}%::2} to {punish.offenses.%{_punishType}%::%{_p}%::3}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::2} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::3}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::2} to {punish.offenses.%{_punishType}%.date::%{_p}%::3}
+            set {punish.offenses.%{_punishType}%::%{_p}%::3} to {punish.offenses.%{_punishType}%::%{_p}%::4}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::3} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::4}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::3} to {punish.offenses.%{_punishType}%.date::%{_p}%::4}
+            set {punish.offenses.%{_punishType}%::%{_p}%::4} to {punish.offenses.%{_punishType}%::%{_p}%::5}
+            set {punish.offenses.%{_punishType}%.punisher::%{_p}%::4} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::5}
+            set {punish.offenses.%{_punishType}%.date::%{_p}%::4} to {punish.offenses.%{_punishType}%.date::%{_p}%::5}
+            delete {punish.offenses.%{_punishType}%::%{_p}%::5}
+            delete {punish.offenses.%{_punishType}%.punisher::%{_p}%::5}
+            delete {punish.offenses.%{_punishType}%.date::%{_p}%::5}
+    else:
+        set {_p} to {_player} parsed as offline player
+        set {punish.offenses.%{_punishType}%::%{_p}%::5} to {punish.offenses.%{_punishType}%::%{_p}%::4}
+        set {punish.offenses.%{_punishType}%.punisher::%{_p}%::5} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::4}
+        set {punish.offenses.%{_punishType}%.date::%{_p}%::5} to {punish.offenses.%{_punishType}%.date::%{_p}%::4}
+        set {punish.offenses.%{_punishType}%::%{_p}%::4} to {punish.offenses.%{_punishType}%::%{_p}%::3}
+        set {punish.offenses.%{_punishType}%.punisher::%{_p}%::4} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::3}
+        set {punish.offenses.%{_punishType}%.date::%{_p}%::4} to {punish.offenses.%{_punishType}%.date::%{_p}%::3}
+        set {punish.offenses.%{_punishType}%::%{_p}%::3} to {punish.offenses.%{_punishType}%::%{_p}%::2}
+        set {punish.offenses.%{_punishType}%.punisher::%{_p}%::3} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::2}
+        set {punish.offenses.%{_punishType}%.date::%{_p}%::3} to {punish.offenses.%{_punishType}%.date::%{_p}%::2}
+        set {punish.offenses.%{_punishType}%::%{_p}%::2} to {punish.offenses.%{_punishType}%::%{_p}%::1}
+        set {punish.offenses.%{_punishType}%.punisher::%{_p}%::2} to {punish.offenses.%{_punishType}%.punisher::%{_p}%::1}
+        set {punish.offenses.%{_punishType}%.date::%{_p}%::2} to {punish.offenses.%{_punishType}%.date::%{_p}%::1}
+        set {punish.offenses.%{_punishType}%::%{_p}%::1} to {_punish}
+        set {punish.offenses.%{_punishType}%.punisher::%{_p}%::1} to {_punisher}
+        set {punish.offenses.%{_punishType}%.date::%{_p}%::1} to now
     {@debug} = true:
         set {_n} to 0
         loop 5 times:
@@ -91,6 +146,7 @@ command /punish [<text>] [<text="main">] [<text>]:
                 make gui slot 12 of sender with paper named "&c&nChat Offense" to close then run player command "/punish %{_p}% chat"
                 make gui slot 14 of sender with iron sword named "&c&nGameplay Offense" to close then run player command "/punish %{_p}% gameplay"
                 make gui slot 16 of sender with redstone block named "&c&nOther Offense" to close then run player command "/punish %{_p}% other"
+                #make gui slot 18 of sender with torch item named "&a&nRemove a Punishment" to close then run player command "/punish %{_p}% remove"
                 make gui slot 26 of sender with redstone torch item named "&3Exit" to close
             else if arg 2 = "general":
                 open virtual chest inventory with size 3 named "Punish » General" to sender
@@ -103,15 +159,25 @@ command /punish [<text>] [<text="main">] [<text>]:
                 make gui slot 14 of sender with azure bluet named "&6&n{@generalPunish5}" to close then run player command "/punish %{_p}% confirm generalPunish5"
                 make gui slot 15 of sender with azure bluet named "&6&n{@generalPunish6}" to close then run player command "/punish %{_p}% confirm generalPunish6"
                 make gui slot 16 of sender with azure bluet named "&6&n{@generalPunish7}" to close then run player command "/punish %{_p}% confirm generalPunish7"
-                if {punish.offenses::%{_p}%::*} is set:
+                if {punish.offenses.general::%{_p}%::*} is not set:
+                    make gui slot 22 of sender with red stained glass pane named "&7No previous offenses" to do nothing
+                else:
                     set {_slot} to 20
                     set {_n} to 1
-                    loop 5 times:
-                        make gui slot ({_slot}) of sender with black stained glass pane named "&2&n%{punish.offenses::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.date::%{_p}%::%{_n}%}%" to do nothing
+                    set {_size} to size of {punish.offenses.general::%{_p}%::*}
+                    set {_size.2} to 5 - {_size}
+                    loop {_size} times:
+                        if {_n} = 1:
+                            make gui slot ({_slot}) of sender with black stained glass pane of power 1 named "&2&n%{punish.offenses.general::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.general.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.general.date::%{_p}%::%{_n}%}%||&r||&8&o[Right-Click] &8Remove punishment" to close then run player command "/punish %{_p}% remove %{_n}%.general" using right click
+                        else:
+                            make gui slot ({_slot}) of sender with black stained glass pane named "&2&n%{punish.offenses.general::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.general.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.general.date::%{_p}%::%{_n}%}%||&r||&8&o[Right-Click] &8Remove punishment" to close then run player command "/punish %{_p}% remove %{_n}%.general" using right click
+                        add 1 to {_n}
+                        add 1 to {_slot}
+                    loop {_size.2} times:
+                        make gui slot ({_slot}) of sender with red stained glass pane named "&4&nNo Action" to do nothing
                         add 1 to {_slot}
                         add 1 to {_n}
-                else:
-                    make gui slot 22 of sender with red stained glass pane named "&7No previous offenses" to do nothing
+                #make gui slot 18 of sender with torch item named "&a&nRemove a Punishment" to close then run player command "/punish %{_p}% remove"
                 make gui slot 26 of sender with redstone torch item named "&3Back" with lore "||&8&o[Left-Click] &8Back one page||&8&o[Right-Click] &8Exit Menu" to close using right
                 make gui slot 26 of sender with redstone torch item named "&3Back" with lore "||&8&o[Left-Click] &8Back one page||&8&o[Right-Click] &8Exit Menu" to close then run player command "/punish %{_p}% main" using left
             else if arg 2 = "chat":
@@ -125,15 +191,25 @@ command /punish [<text>] [<text="main">] [<text>]:
                 make gui slot 14 of sender with azure bluet named "&6&n{@chatPunish5}" to close then run player command "/punish %{_p}% confirm chatPunish5"
                 make gui slot 15 of sender with azure bluet named "&6&n{@chatPunish6}" to close then run player command "/punish %{_p}% confirm chatPunish6"
                 make gui slot 16 of sender with azure bluet named "&6&n{@chatPunish7}" to close then run player command "/punish %{_p}% confirm chatPunish7"
-                if {punish.offenses::%{_p}%::*} is set:
+                if {punish.offenses.chat::%{_p}%::*} is not set:
+                    make gui slot 22 of sender with red stained glass pane named "&7No previous offenses" to do nothing
+                else:
                     set {_slot} to 20
                     set {_n} to 1
-                    loop 5 times:
-                        make gui slot ({_slot}) of sender with black stained glass pane named "&2&n%{punish.offenses::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.date::%{_p}%::%{_n}%}%" to do nothing
+                    set {_size} to size of {punish.offenses.chat::%{_p}%::*}
+                    set {_size.2} to 5 - {_size}
+                    loop {_size} times:
+                        if {_n} = 1:
+                            make gui slot ({_slot}) of sender with black stained glass pane of power 1 named "&2&n%{punish.offenses.chat::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.chat.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.chat.date::%{_p}%::%{_n}%}%||&r||&8&o[Right-Click] &8Remove punishment" to close then run player command "/punish %{_p}% remove %{_n}%.chat" using right click
+                        else:
+                            make gui slot ({_slot}) of sender with black stained glass pane named "&2&n%{punish.offenses.chat::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.chat.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.chat.date::%{_p}%::%{_n}%}%||&r||&8&o[Right-Click] &8Remove punishment" to close then run player command "/punish %{_p}% remove %{_n}%.chat" using right click
+                        add 1 to {_n}
+                        add 1 to {_slot}
+                    loop {_size.2} times:
+                        make gui slot ({_slot}) of sender with red stained glass pane named "&4&nNo Action" to do nothing
                         add 1 to {_slot}
                         add 1 to {_n}
-                else:
-                    make gui slot 22 of sender with red stained glass pane named "&7No previous offenses" to do nothing
+                #make gui slot 18 of sender with torch item named "&a&nRemove a Punishment" to close then run player command "/punish %{_p}% remove"
                 make gui slot 26 of sender with redstone torch item named "&3Back" with lore "||&8&o[Left-Click] &8Back one page||&8&o[Right-Click] &8Exit Menu" to close using right
                 make gui slot 26 of sender with redstone torch item named "&3Back" with lore "||&8&o[Left-Click] &8Back one page||&8&o[Right-Click] &8Exit Menu" to close then run player command "/punish %{_p}% main" using left
             else if arg 2 = "gameplay":
@@ -147,15 +223,25 @@ command /punish [<text>] [<text="main">] [<text>]:
                 make gui slot 14 of sender with azure bluet named "&6&n{@gameplayPunish5}" to close then run player command "/punish %{_p}% confirm gameplayPunish5"
                 make gui slot 15 of sender with azure bluet named "&6&n{@gameplayPunish6}" to close then run player command "/punish %{_p}% confirm gameplayPunish6"
                 make gui slot 16 of sender with azure bluet named "&6&n{@gameplayPunish7}" to close then run player command "/punish %{_p}% confirm gameplayPunish7"
-                if {punish.offenses::%{_p}%::*} is set:
+                if {punish.offenses.gameplay::%{_p}%::*} is not set:
+                    make gui slot 22 of sender with red stained glass pane named "&7No previous offenses" to do nothing
+                else:
                     set {_slot} to 20
                     set {_n} to 1
-                    loop 5 times:
-                        make gui slot ({_slot}) of sender with black stained glass pane named "&2&n%{punish.offenses::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.date::%{_p}%::%{_n}%}%" to do nothing
+                    set {_size} to size of {punish.offenses.gameplay::%{_p}%::*}
+                    set {_size.2} to 5 - {_size}
+                    loop {_size} times:
+                        if {_n} = 1:
+                            make gui slot ({_slot}) of sender with black stained glass pane of power 1 named "&2&n%{punish.offenses.gameplay::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.gameplay.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.gameplay.date::%{_p}%::%{_n}%}%||&r||&8&o[Right-Click] &8Remove Punishment %{_n}%" to close then run player command "/punish %{_p}% remove %{_n}%.gameplay" using right click
+                        else:
+                            make gui slot ({_slot}) of sender with black stained glass pane named "&2&n%{punish.offenses.gameplay::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.gameplay.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.gameplay.date::%{_p}%::%{_n}%}%||&r||&8&o[Right-Click] &8Remove punishment" to close then run player command "/punish %{_p}% remove %{_n}%.gameplay" using right click
+                        add 1 to {_n}
+                        add 1 to {_slot}
+                    loop {_size.2} times:
+                        make gui slot ({_slot}) of sender with red stained glass pane named "&4&nNo Action" to do nothing
                         add 1 to {_slot}
                         add 1 to {_n}
-                else:
-                    make gui slot 22 of sender with red stained glass pane named "&7No previous offenses" to do nothing
+                #make gui slot 18 of sender with torch item named "&a&nRemove a Punishment" to close then run player command "/punish %{_p}% remove"
                 make gui slot 26 of sender with redstone torch item named "&3Back" with lore "||&8&o[Left-Click] &8Back one page||&8&o[Right-Click] &8Exit Menu" to close using right
                 make gui slot 26 of sender with redstone torch item named "&3Back" with lore "||&8&o[Left-Click] &8Back one page||&8&o[Right-Click] &8Exit Menu" to close then run player command "/punish %{_p}% main" using left
             else if arg 2 = "other":
@@ -169,17 +255,38 @@ command /punish [<text>] [<text="main">] [<text>]:
                 make gui slot 14 of sender with azure bluet named "&6&n{@otherPunish5}" to close then run player command "/punish %{_p}% confirm otherPunish5"
                 make gui slot 15 of sender with azure bluet named "&6&n{@otherPunish6}" to close then run player command "/punish %{_p}% confirm otherPunish6"
                 make gui slot 16 of sender with azure bluet named "&6&n{@otherPunish7}" to close then run player command "/punish %{_p}% confirm otherPunish7"
-                if {punish.offenses::%{_p}%::*} is set:
+                if {punish.offenses.other::%{_p}%::*} is not set:
+                    make gui slot 22 of sender with red stained glass pane named "&7No previous offenses" to do nothing
+                else:
                     set {_slot} to 20
                     set {_n} to 1
-                    loop 5 times:
-                        make gui slot ({_slot}) of sender with black stained glass pane named "&2&n%{punish.offenses::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.date::%{_p}%::%{_n}%}%" to do nothing
+                    set {_size} to size of {punish.offenses.other::%{_p}%::*}
+                    set {_size.2} to 5 - {_size}
+                    loop {_size} times:
+                        if {_n} = 1:
+                            make gui slot ({_slot}) of sender with black stained glass pane of power 1 named "&2&n%{punish.offenses.other::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.other.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.other.date::%{_p}%::%{_n}%}%||&r||&8&o[Right-Click] &8Remove punishment" to close then run player command "/punish %{_p}% remove %{_n}%.other" using right click
+                        else:
+                            make gui slot ({_slot}) of sender with black stained glass pane named "&2&n%{punish.offenses.other::%{_p}%::%{_n}%}%" with lore "&8Info|| &7Punisher {@h}%{punish.offenses.other.punisher::%{_p}%::%{_n}%}%|| &7Date &e%{punish.offenses.other.date::%{_p}%::%{_n}%}%||&r||&8&o[Right-Click] &8Remove punishment" to close then run player command "/punish %{_p}% remove %{_n}%.other" using right click
+                        add 1 to {_n}
+                        add 1 to {_slot}
+                    loop {_size.2} times:
+                        make gui slot ({_slot}) of sender with red stained glass pane named "&4&nNo Action" to do nothing
                         add 1 to {_slot}
                         add 1 to {_n}
-                else:
-                    make gui slot 22 of sender with red stained glass pane named "&7No previous offenses" to do nothing
+                #make gui slot 18 of sender with torch item named "&a&nRemove a Punishment" to close then run player command "/punish %{_p}% remove"
                 make gui slot 26 of sender with redstone torch item named "&3Back" with lore "||&8&o[Left-Click] &8Back one page||&8&o[Right-Click] &8Exit Menu" to close using right
                 make gui slot 26 of sender with redstone torch item named "&3Back" with lore "||&8&o[Left-Click] &8Back one page||&8&o[Right-Click] &8Exit Menu" to close then run player command "/punish %{_p}% main" using left
+            else if arg 2 = "remove":
+                if arg 3 is set:
+                    set {_type::*} to arg-3 split at "."
+                    set {_num} to {_type::1} parsed as integer
+                    if {_type::2} = "general" or "chat" or "other" or "gameplay":
+                        if {_num} is between 1 and 5:
+                            send "{@p} Removed {@h}%{punish.offenses.%{_type::2}%::%{_p}%::%{_num}%}%{@t} from {@h}%{_p}%{@t}."
+                            delete {punish.offenses.%{_type::2}%::%{_p}%::%{_num}%}
+                            delete {punish.offenses.%{_type::2}%.punisher::%{_p}%::%{_num}%}
+                            delete {punish.offenses.%{_type::2}%.date::%{_p}%::%{_num}%}
+                            updatePunishments("%{_p}%", "backwards", sender, "%{_type::2}%")
             else if arg 2 = "confirm":
                 if arg 3 contains "generalPunish":
                     set {_punishment} to arg-3
@@ -250,144 +357,144 @@ command /punish [<text>] [<text="main">] [<text>]:
                         make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@gameplayPunish6}"
                     if {_punishment} = 7:
                         make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@gameplayPunish7}"
-            else if arg 3 contains "otherPunish":
-                set {_punishment} to arg-3
-                replace all {@letters} in {_punishment} with ""
-                set {_punishment} to {_punishment} parsed as integer
-                open virtual chest inventory with size 3 named "Punish » Confirm" to sender
-                #wait 1 tick
-                make gui slot 4 of sender with skull of "%{_p}%" parsed as offline player named "&a&n%{_p}%" to do nothing
-                make gui slot 12 of sender with light green stained clay named "&a&lConfirm" to close then run player command "/punish %{_p}% execute %arg-3%"
-                make gui slot 14 of sender with red stained clay named "&c&lCancel" to close
-                if {_punishment} = 1:
-                    make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish1}"
-                if {_punishment} = 2:
-                    make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish2}"
-                if {_punishment} = 3:
-                    make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish3}"
-                if {_punishment} = 4:
-                    make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish4}"
-                if {_punishment} = 5:
-                    make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish5}"
-                if {_punishment} = 6:
-                    make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish6}"
-                if {_punishment} = 7:
-                    make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish7}"
+                else if arg 3 contains "otherPunish":
+                    set {_punishment} to arg-3
+                    replace all {@letters} in {_punishment} with ""
+                    set {_punishment} to {_punishment} parsed as integer
+                    open virtual chest inventory with size 3 named "Punish » Confirm" to sender
+                    #wait 1 tick
+                    make gui slot 4 of sender with skull of "%{_p}%" parsed as offline player named "&a&n%{_p}%" to do nothing
+                    make gui slot 12 of sender with light green stained clay named "&a&lConfirm" to close then run player command "/punish %{_p}% execute %arg-3%"
+                    make gui slot 14 of sender with red stained clay named "&c&lCancel" to close
+                    if {_punishment} = 1:
+                        make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish1}"
+                    if {_punishment} = 2:
+                        make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish2}"
+                    if {_punishment} = 3:
+                        make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish3}"
+                    if {_punishment} = 4:
+                        make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish4}"
+                    if {_punishment} = 5:
+                        make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish5}"
+                    if {_punishment} = 6:
+                        make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish6}"
+                    if {_punishment} = 7:
+                        make gui slot 22 of sender with book and quill named "&6&nPunishment Info" with lore "&8Info|| &7Player {@h}%{_p}%|| &7Punishment {@h}{@otherPunish7}"
             else if arg 2 = "execute":
                 # GENERAL
                 if arg 3 = "generalPunish1":
-                    updatePunishments("%{_p}%", "{@generalPunish1}", sender)
+                    updatePunishments("%{_p}%", "{@generalPunish1}", sender, "general")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@generalPunish1}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "generalPunish2":
-                    updatePunishments("%{_p}%", "{@generalPunish2}", sender)
+                    updatePunishments("%{_p}%", "{@generalPunish2}", sender, "general")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@generalPunish2}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "generalPunish3":
-                    updatePunishments("%{_p}%", "{@generalPunish3}", sender)
+                    updatePunishments("%{_p}%", "{@generalPunish3}", sender, "general")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@generalPunish3}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "generalPunish4":
-                    updatePunishments("%{_p}%", "{@generalPunish4}", sender)
+                    updatePunishments("%{_p}%", "{@generalPunish4}", sender, "general")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@generalPunish4}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "generalPunish5":
-                    updatePunishments("%{_p}%", "{@generalPunish5}", sender)
+                    updatePunishments("%{_p}%", "{@generalPunish5}", sender, "general")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@generalPunish5}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "generalPunish6":
-                    updatePunishments("%{_p}%", "{@generalPunish6}", sender)
+                    updatePunishments("%{_p}%", "{@generalPunish6}", sender, "general")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@generalPunish6}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "generalPunish7":
-                    updatePunishments("%{_p}%", "{@generalPunish7}", sender)
+                    updatePunishments("%{_p}%", "{@generalPunish7}", sender, "general")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@generalPunish7}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 # CHAT
                 if arg 3 = "chatPunish1":
-                    updatePunishments("%{_p}%", "{@chatPunish1}", sender)
+                    updatePunishments("%{_p}%", "{@chatPunish1}", sender, "chat")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@chatPunish1}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "chatPunish2":
-                    updatePunishments("%{_p}%", "{@chatPunish2}", sender)
+                    updatePunishments("%{_p}%", "{@chatPunish2}", sender, "chat")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@chatPunish2}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "chatPunish3":
-                    updatePunishments("%{_p}%", "{@chatPunish3}", sender)
+                    updatePunishments("%{_p}%", "{@chatPunish3}", sender, "chat")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@chatPunish3}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "chatPunish4":
-                    updatePunishments("%{_p}%", "{@chatPunish4}", sender)
+                    updatePunishments("%{_p}%", "{@chatPunish4}", sender, "chat")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@chatPunish4}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "chatPunish5":
-                    updatePunishments("%{_p}%", "{@chatPunish5}", sender)
+                    updatePunishments("%{_p}%", "{@chatPunish5}", sender, "chat")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@chatPunish5}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "chatPunish6":
-                    updatePunishments("%{_p}%", "{@chatPunish6}", sender)
+                    updatePunishments("%{_p}%", "{@chatPunish6}", sender, "chat")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@chatPunish6}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "chatPunish7":
-                    updatePunishments("%{_p}%", "{@chatPunish7}", sender)
+                    updatePunishments("%{_p}%", "{@chatPunish7}", sender, "chat")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@chatPunish7}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 # GAMEPLAY
                 if arg 3 = "gameplayPunish1":
-                    updatePunishments("%{_p}%", "{@gameplayPunish1}", sender)
+                    updatePunishments("%{_p}%", "{@gameplayPunish1}", sender, "gameplay")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@gameplayPunish1}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "gameplayPunish2":
-                    updatePunishments("%{_p}%", "{@gameplayPunish2}", sender)
+                    updatePunishments("%{_p}%", "{@gameplayPunish2}", sender, "gameplay")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@gameplayPunish2}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "gameplayPunish3":
-                    updatePunishments("%{_p}%", "{@gameplayPunish3}", sender)
+                    updatePunishments("%{_p}%", "{@gameplayPunish3}", sender, "gameplay")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@gameplayPunish3}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "gameplayPunish4":
-                    updatePunishments("%{_p}%", "{@gameplayPunish4}", sender)
+                    updatePunishments("%{_p}%", "{@gameplayPunish4}", sender, "gameplay")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@gameplayPunish4}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "gameplayPunish5":
-                    updatePunishments("%{_p}%", "{@gameplayPunish5}", sender)
+                    updatePunishments("%{_p}%", "{@gameplayPunish5}", sender, "gameplay")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@gameplayPunish5}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "gameplayPunish6":
-                    updatePunishments("%{_p}%", "{@gameplayPunish6}", sender)
+                    updatePunishments("%{_p}%", "{@gameplayPunish6}", sender, "gameplay")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@gameplayPunish6}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "gameplayPunish7":
-                    updatePunishments("%{_p}%", "{@gameplayPunish7}", sender)
+                    updatePunishments("%{_p}%", "{@gameplayPunish7}", sender, "gameplay")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@gameplayPunish7}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 # OTHER
                 if arg 3 = "otherPunish1":
-                    updatePunishments("%{_p}%", "{@otherPunish1}", sender)
+                    updatePunishments("%{_p}%", "{@otherPunish1}", sender, "other")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@otherPunish1}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "otherPunish2":
-                    updatePunishments("%{_p}%", "{@otherPunish2}", sender)
+                    updatePunishments("%{_p}%", "{@otherPunish2}", sender, "other")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@otherPunish2}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "otherPunish3":
-                    updatePunishments("%{_p}%", "{@otherPunish3}", sender)
+                    updatePunishments("%{_p}%", "{@otherPunish3}", sender, "other")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@otherPunish3}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "otherPunish4":
-                    updatePunishments("%{_p}%", "{@otherPunish4}", sender)
+                    updatePunishments("%{_p}%", "{@otherPunish4}", sender, "other")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@otherPunish4}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "otherPunish5":
-                    updatePunishments("%{_p}%", "{@otherPunish5}", sender)
+                    updatePunishments("%{_p}%", "{@otherPunish5}", sender, "other")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@otherPunish5}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "otherPunish6":
-                    updatePunishments("%{_p}%", "{@otherPunish6}", sender)
+                    updatePunishments("%{_p}%", "{@otherPunish6}", sender, "other")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@otherPunish6}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 = "otherPunish7":
-                    updatePunishments("%{_p}%", "{@otherPunish7}", sender)
+                    updatePunishments("%{_p}%", "{@otherPunish7}", sender, "other")
                     send "{@p} Punished {@h}%{_p}%{@t} for {@h}{@otherPunish7}{@t}."
                     #! PUT YOUR COMMAND ON THIS LINE
                 else if arg 3 does not contain "Punish":
@@ -401,31 +508,56 @@ command /punish [<text>] [<text="main">] [<text>]:
 command /prunePunishes [<offline player>]:
     permission: {@punishPermission}
     trigger:
-        if {@debug} is not true:
-            send "{@p} &c[&l!!!&r&c] {@h}Debug Mode{@t} is not enabled."
-        else:
-            set {_n} to 0
-            loop 5 times:
-                add 1 to {_n}
-                delete {punish.offenses::%offline player-arg%::%{_n}%}
-                delete {punish.offenses.punisher::%offline player-arg%::%{_n}%}
-                delete {punish.offenses.date::%offline player-arg%::%{_n}%}
-                {@debug} = true:
-                    broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses::%offline player-arg%::%{_n}%}%"
-                    broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses.punisher::%offline player-arg%::%{_n}%}%"
-                    broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses.date::%offline player-arg%::%{_n}%}%"
-            send "{@p} {@debugPrefix} {@t}Cleared {@h}%offline player-arg%'s{@t} offenses."
-command /punishments [<offline player>]:
+        set {_n} to 0
+        loop 5 times:
+            add 1 to {_n}
+            delete {punish.offenses.general::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.general.punisher::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.general.date::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.chat::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.chat.punisher::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.chat.date::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.gameplay::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.gameplay.punisher::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.gameplay.date::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.other::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.other.punisher::%offline player-arg%::%{_n}%}
+            delete {punish.offenses.other.date::%offline player-arg%::%{_n}%}
+            {@debug} = true:
+                broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses::%offline player-arg%::%{_n}%}%"
+                broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses.punisher::%offline player-arg%::%{_n}%}%"
+                broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses.date::%offline player-arg%::%{_n}%}%"
+        send "{@p} {@debugPrefix} {@t}Cleared {@h}%offline player-arg%'s{@t} offenses."
+command /punishments [<offline player>] [<text>]:
     permission: {@punishPermission}
     trigger:
         if {@debug} is not true:
             send "{@p} &c[&l!!!&r&c] {@h}Debug Mode{@t} is not enabled."
         else:
-            set {_n} to 0
-            loop 5 times:
-                add 1 to {_n}
-                {@debug} = true:
-                    broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses::%offline player-arg%::%{_n}%}%"
-                    broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses.punisher::%offline player-arg%::%{_n}%}%"
-                    broadcast "{@debugPrefix} &8PUNISH%{_n}%: &7&o%{punish.offenses.date::%offline player-arg%::%{_n}%}%"
-            send "{@p} {@debugPrefix} {@t}Viewing {@h}%offline player-arg%'s{@t} offenses."
+            if arg-2 = "general", "gameplay", "chat" or "other":
+                set {_n} to 0
+                loop 5 times:
+                    add 1 to {_n}
+                    {@debug} = true:
+                        broadcast "{@debugPrefix} &8PUNISH%{_n}%-%arg-2%: &7&o%{punish.offenses.%arg-2%::%offline player-arg%::%{_n}%}%"
+                        broadcast "{@debugPrefix} &8PUNISH%{_n}%-%arg-2%: &7&o%{punish.offenses.%arg-2%.punisher::%offline player-arg%::%{_n}%}%"
+                        broadcast "{@debugPrefix} &8PUNISH%{_n}%-%arg-2%: &7&o%{punish.offenses.%arg-2%.date::%offline player-arg%::%{_n}%}%"
+                send "{@p} {@debugPrefix} {@t}Viewing {@h}%offline player-arg%'s{@t} offenses. &8[%arg-2%]"
+command /unpunish [<offline player>] [<text>] [<integer>]:
+    permission: {@punishPermission}
+    trigger:
+        if arg 1 is set:
+            if arg 2 = "general", "chat", "gameplay" or "other":
+                if arg 3 is between 1 and 5:
+                    delete {punish.offenses.%arg-2%::%offline player-arg%::%arg-3%}
+                    delete {punish.offenses.%arg-2%.punisher::%offline player-arg%::%arg-3%}
+                    delete {punish.offenses.%arg-2%.date::%offline player-arg%::%arg-3%}
+                    send "{@p} Removed punishment &a%{punish.offenses.%arg-2%::%offline player-arg%::%arg-3%}%{@t} from &a%offline player-arg%{@t}."
+                else:
+                    send "{@error} Choose a number between 1 and 5."
+                    send "{@p} &cUsage: /unpunish [player] [type] [1-5]"
+            else:
+                send "{@error} Select a proper category."
+                send "{@p} &cUsage: /unpunish [player] [type] [1-5]"
+        else:
+            send "{@p} &cUsage: /unpunish [player] [type] [1-5]"
